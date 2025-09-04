@@ -34,8 +34,8 @@ class DatabaseSeeder extends Seeder
         //     'slug' => 'sport-news'
         // ]);
 
-        // User::factory(5)->create();
-        // Category::factory(4)->create();
+        User::factory(5)->create();
+        Category::factory(4)->create();
         Post::factory(15)->create();
     }
 }
