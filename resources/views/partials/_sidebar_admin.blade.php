@@ -11,7 +11,7 @@
         </li><!-- End Dashboard Nav -->
 
         <li class="nav-item">
-            <a href="/" target="_blank" class="nav-link collapsed">
+            <a href="/" class="nav-link collapsed">
                 <i class="bi bi-box-arrow-up-right"></i>
                 <span>View Portal</span>
             </a>

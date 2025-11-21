@@ -62,6 +62,14 @@
                                             @enderror
                                         </div>
 
+                                        <div class="col-12">
+                                            <label for="yourPassword" class="form-label">Confirm Password</label>
+                                            <input type="password" name="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" id="yourPassword">
+                                            @error('password_confirmation')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
                                         {{-- <div class="col-12">
                                             <div class="form-check">
                                                 <input class="form-check-input" name="terms" type="checkbox"

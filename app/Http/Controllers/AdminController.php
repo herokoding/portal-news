@@ -44,10 +44,18 @@ class AdminController extends Controller
             'name' => ['required', 'max:255'],
             'username' => ['required', 'min:5', 'max:50', 'unique:users'],
             'email' => ['required', 'email:dns', 'unique:users'],
-            'password' => ['required', 'min:8', 'max:15']
+            'password' => ['required', 'min:8', 'max:15'],
+            'password_confirmation' => ['required', 'min:8', 'max:15', 'same:password'],
+        ], [
+            'email.unique' => 'Email already exists',
+            'username.unique' => 'Username already exists',
+            'password.same' => 'Password and confirmation password do not match',
+            'password_confirmation.same' => 'Password and confirmation password do not match',
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
+
+        unset($validated['password_confirmation']);
 
         User::create($validated);
 
