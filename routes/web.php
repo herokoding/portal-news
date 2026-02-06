@@ -48,9 +48,6 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-// Route::middleware(['auth:api'])->group(function () {});
-
-
 Route::get('/', [HomeController::class, 'index'])->name('/');
 Route::get('/archive', [HomeController::class, 'archive'])->name('archive');
 

@@ -13,6 +13,7 @@ class PostController extends Controller
             'title' => $post->title,
             'post' => $post,
             'categories' => Category::all(),
+            'recent_post' => Post::latest()->take(5)->get(),
         ]);
     }
 }

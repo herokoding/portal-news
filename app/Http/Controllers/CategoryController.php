@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -15,7 +16,9 @@ class CategoryController extends Controller
             'post' => $posts,
             // 'post' => $category->post->load('category', 'user')->paginate(8)->withQueryString(),
             'category' => $category->name,
-            'categories' => Category::all(),
+            // 'categories' => Category::all(),
+            'categories' => Category::withCount('post')->get(),
+            'recent_post' => Post::latest()->take(5)->get(),
         ]);
     }
 }

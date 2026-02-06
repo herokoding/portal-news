@@ -55,6 +55,8 @@ class AdminController extends Controller
 
         $validated['password'] = Hash::make($validated['password']);
 
+        $validated['role'] = 2;
+
         unset($validated['password_confirmation']);
 
         User::create($validated);
