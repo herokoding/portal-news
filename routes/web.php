@@ -25,10 +25,12 @@ Route::middleware(['guest'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::post('/logout', [AdminController::class, 'logout']);
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard')->middleware('menu.access:dashboard');
+    Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
 
-    Route::prefix('/dashboard/posts')->group(function () {
+    Route::get('/dashboard/profile', [AdminController::class, 'profile'])->name('profile')->middleware('menu.access:profile');
+
+    Route::prefix('/dashboard/posts')->middleware('menu.access:posts')->group(function () {
         Route::get('/', [AdminController::class, 'indexPosts']);
         Route::get('/show/{post:slug}', [AdminController::class, 'showPosts']);
         Route::get('/create', [AdminController::class, 'createPosts']);
@@ -40,11 +42,18 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/updatePost/{post:slug}', [AdminController::class, 'updatePost']);
     });
 
-    Route::prefix('/dashboard/categories')->group(function () {
+    Route::prefix('/dashboard/categories')->middleware('menu.access:categories')->group(function () {
         Route::get('/', [AdminController::class, 'indexCategories']);
         Route::get('/create', [AdminController::class, 'createCategories']);
         Route::get('/checkSlugCategory', [AdminController::class, 'checkSlugCategory']);
         Route::post('/storeCategory', [AdminController::class, 'storeCategory']);
+    });
+
+    Route::prefix('/dashboard/users')->middleware('menu.access:users')->group(function () {
+        Route::get('/', [AdminController::class, 'indexUsers']);
+        Route::get('/create', [AdminController::class, 'createUsers']);
+        Route::get('/checkSlugUser', [AdminController::class, 'checkSlugUser']);
+        Route::post('/storeUser', [AdminController::class, 'storeUser']);
     });
 });
 

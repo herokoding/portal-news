@@ -11,8 +11,10 @@ class Submenu extends Model
 
     protected $guarded = ['id'];
 
+    // Define the relationship with the Menu model
     public function menu()
     {
+        // A submenu belongs to a menu
         return $this->belongsTo(Menu::class);
     }
 }

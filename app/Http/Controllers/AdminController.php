@@ -55,7 +55,7 @@ class AdminController extends Controller
 
         $validated['password'] = Hash::make($validated['password']);
 
-        $validated['role'] = 2;
+        $validated['role_id'] = 2;
 
         unset($validated['password_confirmation']);
 
@@ -84,6 +84,7 @@ class AdminController extends Controller
     {
         return view('admin.dashboard', [
             'title' => "Dashboard",
+            'pluginScripts' => ['https://cdn.jsdelivr.net/npm/sweetalert2@11'],
             'afterScripts' => ['admin/js/confirmLogout.js']
         ]);
     }

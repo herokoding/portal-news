@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\View\Composers\SidebarComposer;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -28,14 +29,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
 
-        View::composer('partials._sidebar_admin', function($view) {
-            if (Auth::check()) {
-                $role = Auth::user()->role;
-                $menus = $role->menus()->with('submenus')->get();
-                $view->with('menus', $menus);
-            } else {
-                $view->with('menus', collect([]));
-            }
-        });
+        //    View::share('auth', Auth::user());
+        View::composer('partials._sidebar_admin', SidebarComposer::class);
     }
 }
