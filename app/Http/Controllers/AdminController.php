@@ -400,4 +400,9 @@ class AdminController extends Controller
 
         return $paths;
     }
+
+    public function indexSettings()
+    {
+        return 'hello';
+    }
 }

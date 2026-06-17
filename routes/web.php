@@ -31,29 +31,34 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/profile', [AdminController::class, 'profile'])->name('profile')->middleware('menu.access:profile');
 
     Route::prefix('/dashboard/posts')->middleware('menu.access:posts')->group(function () {
-        Route::get('/', [AdminController::class, 'indexPosts']);
-        Route::get('/show/{post:slug}', [AdminController::class, 'showPosts']);
-        Route::get('/create', [AdminController::class, 'createPosts']);
-        Route::get('/checkSlug', [AdminController::class, 'checkSlug']);
+        Route::get('/', [AdminController::class, 'indexPosts'])->name('posts.index');
+        Route::get('/show/{post:slug}', [AdminController::class, 'showPosts'])->name('posts.show');
+        Route::get('/create', [AdminController::class, 'createPosts'])->name('posts.create');
+        Route::get('/checkSlug', [AdminController::class, 'checkSlug'])->name('posts.checkSlug');
         Route::post('/storePost', [AdminController::class, 'storePost']);
         Route::post('/uploadImage', [AdminController::class, 'uploadImage']);
         Route::delete('/deletePost/{post:slug}', [AdminController::class, 'deletePost']);
-        Route::get('/editPost/{post:slug}', [AdminController::class, 'editPost']);
-        Route::put('/updatePost/{post:slug}', [AdminController::class, 'updatePost']);
+        Route::get('/editPost/{post:slug}', [AdminController::class, 'editPost'])->name('posts.edit');
+        Route::put('/updatePost/{post:slug}', [AdminController::class, 'updatePost'])->name('posts.update');
     });
 
     Route::prefix('/dashboard/categories')->middleware('menu.access:categories')->group(function () {
-        Route::get('/', [AdminController::class, 'indexCategories']);
-        Route::get('/create', [AdminController::class, 'createCategories']);
-        Route::get('/checkSlugCategory', [AdminController::class, 'checkSlugCategory']);
+        Route::get('/', [AdminController::class, 'indexCategories'])->name('categories.index');
+        Route::get('/create', [AdminController::class, 'createCategories'])->name('categories.create');
+        Route::get('/checkSlugCategory', [AdminController::class, 'checkSlugCategory'])->name('categories.checkSlug');
         Route::post('/storeCategory', [AdminController::class, 'storeCategory']);
     });
 
     Route::prefix('/dashboard/users')->middleware('menu.access:users')->group(function () {
-        Route::get('/', [AdminController::class, 'indexUsers']);
-        Route::get('/create', [AdminController::class, 'createUsers']);
-        Route::get('/checkSlugUser', [AdminController::class, 'checkSlugUser']);
+        Route::get('/', [AdminController::class, 'indexUsers'])->name('users.index');
+        Route::get('/create', [AdminController::class, 'createUsers'])->name('users.create');
+        Route::get('/checkSlugUser', [AdminController::class, 'checkSlugUser'])->name('users.checkSlug');
         Route::post('/storeUser', [AdminController::class, 'storeUser']);
+    });
+
+    Route::prefix('/dashboard/settings')->middleware('menu.access:settings')->group(function () {
+        Route::get('/', [AdminController::class, 'indexSettings'])->name('settings.index');
+        Route::post('/update', [AdminController::class, 'updateSettings']);
     });
 });
 
