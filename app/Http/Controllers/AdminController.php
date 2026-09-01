@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\Post;
+use App\Models\Role;
+
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -93,13 +95,7 @@ class AdminController extends Controller
     {
         confirmDelete(
             'Are you sure you want to delete this post?',
-            'This action cannot be undone.',
-            'warning',
-            'Yes, delete it!',
-            'Cancel',
-            'error',
-            'success',
-            'Your post has been deleted !!'
+            'This action cannot be undone.'
         );
 
         return view('admin.posts.posts', [
@@ -137,6 +133,27 @@ class AdminController extends Controller
         return view('admin.categories.create', [
             'title' => "Create Category",
             'categories' => Category::all(),
+        ]);
+    }
+
+    public function createUsers()
+    {
+        return view('admin.users.createUser', [
+            'title' => "Create User",
+            'roles' => Role::all(),
+        ]);
+    }
+
+    public function indexUsers()
+    {
+        confirmDelete(
+            'Are you sure you want to delete this user?',
+            'This action cannot be undone.'
+        );
+
+        return view('admin.users.users', [
+            'title' => "List Users",
+            'users' => User::with('role')->get(),
         ]);
     }
 
@@ -225,6 +242,34 @@ class AdminController extends Controller
         return redirect('/dashboard/posts');
     }
 
+    public function storeUser(Request $request)
+    {
+        $request->validate([
+            'name' => ['required', 'max:255'],
+            'username' => ['required', 'min:3', 'max:255', 'unique:users'],
+            'email' => ['required', 'email', 'unique:users'],
+            'password' => ['required', 'confirmed', 'min:8', 'max:15'],
+            'password_confirmation' => ['required', 'min:8', 'max:15', 'same:password'],
+        ]);
+
+        User::create([
+            'name' => $request->name,
+            'username' => $request->username,
+            'role_id' => 2,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        Alert::success('Success!', 'New user has been created !!')
+            ->width('600px')             // Ubah lebar
+            ->padding('3em')             // Ubah padding
+            ->background('#fff url(/images/bg.png) center') // Background kustom
+            ->buttonsStyling(false)      // Nonaktifkan styling bawaan
+            ->iconHtml('<i class="fas fa-check-circle fa-3x"></i>'); // Icon kustom
+
+        return redirect('/dashboard/users');
+    }
+
     private function resizeImage($sourcePath, $destinationPath, $newWidth)
     {
         list($width, $height) = getimagesize($sourcePath);
@@ -296,6 +341,15 @@ class AdminController extends Controller
             'title' => "Edit Post",
             'post' => $post,
             'categories' => Category::all(),
+        ]);
+    }
+
+    public function editUser(User $user)
+    {
+        return view('admin.users.editUser', [
+            'title' => "Edit User",
+            'user' => $user,
+            'roles' => Role::all(),
         ]);
     }
 

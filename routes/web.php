@@ -52,8 +52,10 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('/dashboard/users')->middleware('menu.access:users')->group(function () {
         Route::get('/', [AdminController::class, 'indexUsers'])->name('users.index');
         Route::get('/create', [AdminController::class, 'createUsers'])->name('users.create');
-        Route::get('/checkSlugUser', [AdminController::class, 'checkSlugUser'])->name('users.checkSlug');
         Route::post('/storeUser', [AdminController::class, 'storeUser']);
+        Route::get('/editUser/{user:id}', [AdminController::class, 'editUser'])->name('users.edit');
+        Route::put('/updateUser/{user:id}', [AdminController::class, 'updateUser'])->name('users.update');
+        Route::delete('/deleteUser/{user:id}', [AdminController::class, 'deleteUser']);
     });
 
     Route::prefix('/dashboard/settings')->middleware('menu.access:settings')->group(function () {
